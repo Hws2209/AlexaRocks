@@ -119,7 +119,7 @@ void *readerThread(void *conn)
         while(networkActive)
         {
                 /* TODO: Insert SSL read here into buffer */
-                SSL_read((SSL*)conn,buffer,sizeof(buffer));
+                len = SSL_read((SSL*)conn,buffer,sizeof(buffer));
 
         printf("read %d bytes from server.\n", len);
 
