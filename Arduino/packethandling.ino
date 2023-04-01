@@ -48,6 +48,9 @@ void handleCommand(TPacket *command)
       sendOK();
       clearOneCounter(command->params[0]);
       break;
+    case COMMAND_DETECT_COLOUR:
+      detectColour();
+      break;
 
     default:
       sendBadCommand();
