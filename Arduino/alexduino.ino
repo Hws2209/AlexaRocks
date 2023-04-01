@@ -129,6 +129,7 @@ void setup() {
   alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
   alexCirc = PI * alexDiagonal;
   cli();
+  setupColour();
   setupEINT();
   setupSerial();
   startSerial();
