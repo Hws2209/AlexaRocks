@@ -23,6 +23,16 @@ LSM9DS1 imu;
 #define RF                  11  // Right forward pin
 #define RR                  10  // Right reverse pin
 
+#define S0 13
+#define S1 9
+#define S2 8
+#define S3 7
+#define sensorOut 12 
+
+float redFrequency = 0;
+float greenFrequency = 0;
+float blueFrequency = 0;
+
 // Store the ticks from Alex's left and right encoders.
 volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
 // Left and right encoder ticks for turning
@@ -61,6 +71,7 @@ float getHeading(float ax, float ay, float az, float mx, float my, float mz)
   //  Serial.println(roll, 2);
   //  Serial.print("Heading: "); Serial.println(heading, 2);
 }
+
 void enablePullups()
 {
   // Use bare-metal to enable the pull-up resistors on pins
@@ -70,7 +81,6 @@ void enablePullups()
   PORTD |=  (1 << 2) | (1 << 3);
 }
 
-
 // Set up Alex's motors. Right now this is empty, but later you will replace it with code to set up the PWMs to drive the motors.
 // Convert percentages to PWM values
 int pwmVal(float speed)
@@ -79,10 +89,20 @@ int pwmVal(float speed)
   if (speed > 100.0) speed = 100.0;
   return (int) ((speed / 100.0) * 255.0);
 }
+
 void initializeState()
 {
   clearCounters();
 }
+
+void detectColour()
+{
+}
+
+void setupColour()
+{
+}
+
 void setup() {
   // put your setup code here, to run once:
   Wire.begin();
