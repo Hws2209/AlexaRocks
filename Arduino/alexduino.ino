@@ -97,6 +97,38 @@ void initializeState()
 
 void detectColour()
 {
+  redFrequency = 0;
+  greenFrequency = 0;
+  blueFrequency = 0;
+  
+  float val = 0;
+  
+  // Setting RED (R) filtered photodiodes to be read
+  digitalWrite(S2,LOW);  
+  digitalWrite(S3,LOW);
+  for (int i = 0; i < 10; i++) {
+    val = pulseIn(sensorOut, LOW); 
+    redFrequency += val / 10;
+  }
+  delay(100);
+  
+  // Setting GREEN (G) filtered photodiodes to be read
+  digitalWrite(S2,HIGH);  
+  digitalWrite(S3,HIGH);
+  for (int i = 0; i < 10; i++) {
+    val = pulseIn(sensorOut, LOW); 
+    greenFrequency += val / 10;
+  }
+  delay(100);
+  
+  // Setting BLUE (B) filtered photodiodes to be read
+  digitalWrite(S2,LOW);  
+  digitalWrite(S3,HIGH);
+  for (int i = 0; i < 10; i++) {
+    val = pulseIn(sensorOut, LOW); 
+    blueFrequency += val / 10;
+  }
+  delay(100);
 }
 
 void setupColour()
