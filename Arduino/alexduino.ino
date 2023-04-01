@@ -129,6 +129,18 @@ void detectColour()
     blueFrequency += val / 10;
   }
   delay(100);
+  
+  if (redFrequency + greenFrequency + blueFrequency < 600) {
+    sendMessage("WHITE");
+  } else if (redFrequency + greenFrequency + blueFrequency > 1700) {
+    sendMessage("EMPTY");
+  } else if (greenFrequency / redFrequency > 1.8) {
+    sendMessage("RED");
+  } else if (redFrequency - greenFrequency > 50) {
+    sendMessage("GREEN");
+  } else {
+    sendMessage("???");
+  }
 }
 
 void setupColour()
