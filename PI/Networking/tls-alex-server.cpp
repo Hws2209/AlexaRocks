@@ -182,7 +182,6 @@ void *uartReceiveThread(void *p)
 
 	*/
 
-
 void sendNetworkData(const char *data, int len)
 {
 	// Send only if network is active
