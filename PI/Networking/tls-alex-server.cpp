@@ -331,7 +331,6 @@ void *worker(void *conn)
     EXIT_THREAD(conn);
 }
 
-
 void sendHello()
 {
 	// Send a hello packet
