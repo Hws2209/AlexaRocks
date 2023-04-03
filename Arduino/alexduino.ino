@@ -5,6 +5,7 @@
 #include <Wire.h>
 #include <SparkFunLSM9DS1_test.h>
 #include <math.h>
+
 //Alex's configuration constants
 // Number of ticks per revolution from the wheel encoder.
 #define COUNTS_PER_REV      180
