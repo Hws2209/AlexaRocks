@@ -80,17 +80,7 @@ void left(float ang, float speed)
   dir = LEFT;
   int val = pwmVal(speed);
 
-  // For now we will ignore ang. We will
-  //      stop();
-  //      break;
-  //    case COMMAND_GET_STATS:
-  //      sendStatus();
-  //      break;
-  //    case COMMAND_CLEAR_STATS:
-  //      sendOK();
-  //      clearOneCounter(command->params[0]);
-  //      breakfix this in Week 9.
-  // We will also replace this code with bare-metal later.
+  // We will replace this code with bare-metal later.
   // To turn left we reverse the left wheel and move
   // the right wheel forward.
   analogWrite(LR, val);
