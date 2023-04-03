@@ -3,15 +3,6 @@ void setupMotors()
   DDRD = (1 << 5) | (1 << 6);
   DDRB = (1 << 2) | (1 << 3);
 
-  //      stop();
-  //      break;
-  //    case COMMAND_GET_STATS:
-  //      sendStatus();
-  //      break;
-  //    case COMMAND_CLEAR_STATS:
-  //      sendOK();
-  //      clearOneCounter(command->params[0]);
-  //      break;
   //  /* Our motor set up is:
   //        A1IN - Pin 5, PD5, OC0B
   //        A2IN - Pin 6, PD6, OC0A
