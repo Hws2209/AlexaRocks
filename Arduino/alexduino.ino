@@ -130,13 +130,13 @@ void detectColour()
   }
   delay(100);
   
-  if (redFrequency + greenFrequency + blueFrequency < 600) {
+  if (redFrequency + greenFrequency + blueFrequency < 650) {
     sendMessage("WHITE");
-  } else if (redFrequency + greenFrequency + blueFrequency > 1700) {
+  } else if (redFrequency + greenFrequency + blueFrequency > 1800) {
     sendMessage("EMPTY");
   } else if (greenFrequency / redFrequency > 1.8) {
     sendMessage("RED");
-  } else if (redFrequency - greenFrequency > 50) {
+  } else if (redFrequency - greenFrequency > 60) {
     sendMessage("GREEN");
   } else {
     sendMessage("???");
