@@ -189,18 +189,13 @@ void sendNetworkData(const char *data, int len)
 	{
         // Use this to store the number of bytes actually written to the TLS connection.
         int c;
-                printf("check1\n");
 		printf("WRITING TO CLIENT\n");
-		printf("check2\n");
         
         if(tls_conn != NULL) {
             /* TODO: Implement SSL write here to write data to the network. Note that
               handleNetworkData should already have set tls_conn to point to the TLS
               connection we want to write to. */
-                printf("check3\n");
-		printf("%d\n", len);
 		c = SSL_write((SSL *)tls_conn, data, len);
-		printf("%d\n", c);
 
             /* END TODO */
 
