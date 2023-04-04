@@ -12,7 +12,7 @@
 // Wheel circumference in cm.
 // We will use this to calculate forward/backward distance traveled by taking revs * WHEEL_CIRC
 #define WHEEL_CIRC          20.4
-#define ALEX_LENGTH 17.5
+#define ALEX_LENGTH 22.5
 #define ALEX_BREADTH 12.5
 float alexDiagonal = 0.0;
 float alexCirc = 0.0;
