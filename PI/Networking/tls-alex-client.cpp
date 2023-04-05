@@ -1,4 +1,3 @@
-
 // Routines to create a TLS client
 #include "make_tls_client.h"
 
