@@ -293,6 +293,7 @@ int main()
 
 	while(!exitFlag)
 	{       
+		clear();
 		char input;
 		if (ncurse_flag == 1) {
 			initscr();
@@ -320,6 +321,7 @@ int main()
                 
 		if (ch == 'o') {
 			ncurse_flag = 1;
+			refresh();
 		} else {
 			sendCommand(ch);
 		}
