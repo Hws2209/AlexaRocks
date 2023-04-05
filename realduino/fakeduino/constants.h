@@ -45,7 +45,9 @@ typedef enum
   COMMAND_F = 8,
   COMMAND_B = 9,
   COMMAND_L = 10,
-  COMMAND_R = 11
+  COMMAND_R = 11,
+  COMMAND_INCREASE = 12,
+  COMMAND_DECREASE = 13
 } TCommandType;
 
 typedef enum
@@ -56,5 +58,6 @@ typedef enum
   LEFT = 3,
   RIGHT = 4
 }TDirection;
+
 volatile TDirection dir = STOP;
 #endif
