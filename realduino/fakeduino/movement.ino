@@ -117,17 +117,24 @@ void right(float ang, float speed)
 
 void proportional_control(TDirection dir)
 {
-  float control;
-  control = degree * proportional;
+  float control = degree * proportional;
+  int val_1 = pwmVal(motor_speed) + control;
+  int val_2 = pwmVal(motor_speed) - control;
+
+  if (val_1 < 0) val_1 = 0;
+  if (val_1 > 255) val_1 = 255;
+  if (val_2 < 0) val_2 = 0;
+  if (val_2 > 255) val_2 = 255;
+  
   if (dir == FORWARD) 
   {
-    analogWrite(LF, pwmVal(motor_speed) + pwmVal(control));
-    analogWrite(RF, pwmVal(motor_speed) - pwmVal(control));
+    analogWrite(LF, val_1);
+    analogWrite(RF, val_2);
   } 
   else if (dir == BACKWARD) 
   {
-    analogWrite(LR, pwmVal(motor_speed) - pwmVal(control));
-    analogWrite(RR, pwmVal(motor_speed) + pwmVal(control));
+    analogWrite(LR, val_2);
+    analogWrite(RR, val_1);
   }  
 }
 
