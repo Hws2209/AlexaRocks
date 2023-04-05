@@ -232,7 +232,7 @@ void loop() {
     stop();
   }
 
-  if (deltaTicks > 0 && ((dir == LEFT && leftReverseTicksTurns >= targetTicks) || (dir == RIGHT && rightReverseTicksTurns >= targetTicks) || dir == STOP))
+  if (deltaTicks > 0 && ((dir == LEFT && leftReverseTicksTurns >= targetTicks) || (dir == RIGHT && leftForwardTicksTurns >= targetTicks) || dir == STOP))
   {
     deltaTicks = 0;
     targetTicks = 0;
