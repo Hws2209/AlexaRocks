@@ -44,18 +44,13 @@ float redFrequency = 0;
 float greenFrequency = 0;
 float blueFrequency = 0;
 
-// Store the ticks from Alex's left and right encoders.
+// Store the ticks from Alex's left and right encoders (NOT REALLY NEEDED)
 volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
-// Left and right encoder ticks for turning
 volatile unsigned long leftForwardTicksTurns, rightForwardTicksTurns, leftReverseTicksTurns, rightReverseTicksTurns;
-// Store the revolutions on Alex's left and right wheels
 volatile unsigned long leftRevs, rightRevs;
-// Forward and backward distance traveled
 volatile unsigned long forwardDist, reverseDist;
 unsigned long deltaDist, newDist;
-//variables to keep track of our turning angle
 unsigned long deltaTicks, targetTicks;
-// Enable pull up resistors on pins 2 and 3
 
 void calcError() {
   int count = 0;
@@ -175,7 +170,7 @@ void setup() {
   calcError();
   currentTime = micros();
 
-  alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
+  // alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
   alexCirc = PI * ALEX_BREADTH;
   cli();
   setupEINT();
@@ -191,7 +186,7 @@ void setup() {
 
 void loop() {
 
-  // TPACKET RECEIVE
+  // RECEIVE PACKETS
   TPacket recvPacket; // This holds commands from the Pi
   TResult result = readPacket(&recvPacket);
   if (result == PACKET_OK) {
@@ -206,7 +201,7 @@ void loop() {
     sendBadChecksum();
   }
 
-  // IMU SENSOR
+  // IMU SENSOR CODE
   if ( imu.gyroAvailable() ) 
   { 
     // To read from the gyroscope,  first call the 
@@ -222,9 +217,12 @@ void loop() {
   degree += gyroZ*elapsedTime;  
 
   // Execute proportional_control
-  proportional_control(dir);
+  if (dir == FORWARD || dir == BACKWARD)
+  {
+    proportional_control(dir);
+  }
   
-  // OLD MOTOR CONTROLS
+  // OLD MOTOR CONTROLS (NOT REALLY NEEDED)
   if (deltaDist > 0 && ((dir == FORWARD && forwardDist > newDist) || (dir == BACKWARD && reverseDist > newDist) || dir == STOP))
   {
     deltaDist = 0;
