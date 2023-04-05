@@ -12,6 +12,7 @@
 #define PORT_NAME			"/dev/ttyACM0"
 #define BAUD_RATE			B9600
 
+int ncurse_flag = 1;
 int exitFlag=0;
 sem_t _xmitSema;
 
@@ -292,23 +293,23 @@ int main()
 
 	while(!exitFlag)
 	{       
-		int ncurse_flag = 1;
-		char input;
-		initscr();
-		cbreak();
-		noecho();
+		if (ncurse_flag == 1) {
+			char input;
+			initscr();
+			cbreak();
+			noecho();
+		}
+		
 		while (ncurse_flag)
 		{
 			input = getch();
-			if (input == 'z') {
+			if (input == 'o') {
 				ncurse_flag = 0;
 				endwin();
-			} else if (input == 'w' || input == 'a' || input == 's' || input == 'd') {
+			} else if (input == 'w' || input == 'a' || input == 's' || input == 'd', input == 'e') {
 				sendCommand(input);
 			}
 		}
-
-		flushInput();
 
 		char ch;
 		printf("Command (f=forward, b=reverse, l=turn left, r=turn right, e=stop, c=clear stats, g=get stats, x=colour, q=exit)\n");
@@ -316,9 +317,12 @@ int main()
 
 		// Purge extraneous characters from input stream
 		flushInput();
-
-		sendCommand(ch);
-	}
+                
+		if (ch == 'o') {
+			ncurse_flag = 1;
+		} else {
+			sendCommand(ch);
+		}
 
 	printf("Closing connection to Arduino.\n");
 	endSerial();
