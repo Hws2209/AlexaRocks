@@ -52,16 +52,34 @@ void handleCommand(TPacket *command)
       detectColour();
       break;
     case COMMAND_F:
+      dir = FORWARD;
+      degree = 0;
       inch_forward();
       break;
     case COMMAND_B:
+      dir = BACKWARD;
+      degree = 0;
       inch_backward();
       break;
     case COMMAND_L:
+      dir = LEFT;
       inch_left();
       break;
     case COMMAND_R:
+      dir = RIGHT;
       inch_right();
+      break;
+    case COMMAND_INCREASE:
+      if (motor_speed < 100) 
+      {
+        motor_speed += 10.0;
+      }
+      break;
+    case COMMAND_DECREASE:
+      if (motor_speed > 0)
+      {
+        motor_speed -= 10.0;
+      }
       break;
 
     default:
