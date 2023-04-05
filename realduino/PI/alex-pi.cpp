@@ -13,7 +13,8 @@
 #define BAUD_RATE			B9600
 
 int ncurse_flag = 1;
-int exitFlag=0;
+int exitFlag= 0;
+
 sem_t _xmitSema;
 
 void handleError(TResult error)
@@ -259,6 +260,16 @@ void sendCommand(char command)
                         sendPacket(&commandPacket);
                         break;
 
+		case 'k':
+		case 'K':
+			commandPacket.command = COMMAND_DECREASE;
+			sendPacket(&commandPacket);
+		
+		case 'j':
+		case 'J':
+			commandPacket.command = COMMAND_INCREASE;
+			sendPacket(&commandPacket);
+
 		case 'q':
 		case 'Q':
 			exitFlag=1;
@@ -270,9 +281,12 @@ void sendCommand(char command)
 	}
 }
 
+void printMessage(int speed) {
+	printw("w, a, s, d to move.\ne to stop.\nj to increase speed.\nk to decrease speed.\npress o then enter to leave.\nSpeed is %d\n",speed);
+}
+
 int main()
-{
-	// Connect to the Arduino
+{       // Connect to the Arduino
 	startSerial(PORT_NAME, BAUD_RATE, 8, 'N', 1, 5);
 
 	// Sleep for two seconds
@@ -291,34 +305,47 @@ int main()
 	helloPacket.packetType = PACKET_TYPE_HELLO;
 	sendPacket(&helloPacket);
 
+	int speed = 60;
+
 	while(!exitFlag)
 	{       
-		clear();
 		char input;
 		if (ncurse_flag == 1) {
+			clear();
 			initscr();
 			cbreak();
 			noecho();
+			printMessage(speed);
 		}
-		
+
 		while (ncurse_flag)
-		{
+		{       
 			input = getch();
 			if (input == 'o') {
 				ncurse_flag = 0;
 				endwin();
-			} else if (input == 'w' || input == 'a' || input == 's' || input == 'd', input == 'e') {
+				exitFlag = 0;
+			} else if (input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'e' || input == 'j' || input == 'k') {      
+				if (input == 'j' & speed < 100) {
+					speed += 10;
+				} else if (input == 'k' & speed > 0) {
+					speed -= 10;
+				}
+			        clear();
+				printMessage(speed);
+				refresh();
 				sendCommand(input);
+
 			}
 		}
 
 		char ch;
-		printf("Command (f=forward, b=reverse, l=turn left, r=turn right, e=stop, c=clear stats, g=get stats, x=colour, q=exit)\n");
+		printf("Command (f=forward, b=reverse, l=turn left, r=turn right, e=stop, c=clear stats, g=get stats, x=colour, q=exit, o=return to ncurses)\n");
 		scanf("%c", &ch);
 
 		// Purge extraneous characters from input stream
 		flushInput();
-                
+
 		if (ch == 'o') {
 			ncurse_flag = 1;
 			refresh();
@@ -326,7 +353,7 @@ int main()
 			sendCommand(ch);
 		}
 	}
-
-	printf("Closing connection to Arduino.\n");
-	endSerial();
+		printf("Closing connection to Arduino.\n");
+		endSerial();
+		endwin();
 }
