@@ -101,7 +101,7 @@ void right(float ang, float speed)
   } else {
     deltaTicks = computeDeltaTicks(ang);
   }
-  targetTicks = rightReverseTicksTurns + deltaTicks;
+  targetTicks = leftForwardTicksTurns + deltaTicks;
   dir = RIGHT;
   int val = pwmVal(speed);
 
