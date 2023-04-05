@@ -293,8 +293,8 @@ int main()
 
 	while(!exitFlag)
 	{       
+		char input;
 		if (ncurse_flag == 1) {
-			char input;
 			initscr();
 			cbreak();
 			noecho();
