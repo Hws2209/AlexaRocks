@@ -1,6 +1,3 @@
-
-
-
 unsigned long computeDeltaTicks(float ang)
 {
   unsigned long ticks = (unsigned long) ((ang * alexCirc * COUNTS_PER_REV) / (360.0 * WHEEL_CIRC));
@@ -118,42 +115,56 @@ void right(float ang, float speed)
   analogWrite(RF, 0);
 }
 
-void inch_forward()
+void proportional_control(TDirection dir)
 {
-    
-    
-    int val = pwmVal(60);
+  float control;
+  control = degree * proportional;
+  if (dir == FORWARD) 
+  {
+    analogWrite(LF, pwmVal(motor_speed * control));
+    analogWrite(RF, pwmVal(-(control * motor_speed)));
+  } 
+  else if (dir == BACKWARD) 
+  {
+    analogWrite(LR, pwmVal(-(motor_speed * control)));
+    analogWrite(RR, pwmVal(control * motor_speed));
+  }  
+}
+
+void inch_forward()
+{   
+    int val = pwmVal(motor_speed);
     analogWrite(LF,val);
     analogWrite(RF,val);
     analogWrite(LR, 0);
-    analogWrite(RF, 0);
+    analogWrite(RR, 0);
 }
 
 void inch_backward()
 {
-    int val = pwmVal(60);
+    int val = pwmVal(motor_speed);
     analogWrite(LF,0);
     analogWrite(RF,0);
     analogWrite(LR, val);
-    analogWrite(RF, val);
+    analogWrite(RR, val);
 }
 
 void inch_left()
 {
-    int val = pwmVal(60);
+    int val = pwmVal(motor_speed);
     analogWrite(LF, 0);
     analogWrite(RF, val);
     analogWrite(LR, val);
-    analogWrite(RF, 0);
+    analogWrite(RR, 0);
 }
 
 void inch_right()
 {
-    int val = pwmVal(60);
+    int val = pwmVal(motor_speed);
     analogWrite(LF,val);
     analogWrite(RF,0);
-    analogWrite(LR, 0);
-    analogWrite(RF, val);
+    analogWrite(LR,0);
+    analogWrite(RR,val);
 }
 
 // Stop Alex. To replace with bare-metal code later.
