@@ -121,13 +121,13 @@ void proportional_control(TDirection dir)
   control = degree * proportional;
   if (dir == FORWARD) 
   {
-    analogWrite(LF, pwmVal(motor_speed * control));
-    analogWrite(RF, pwmVal(-(control * motor_speed)));
+    analogWrite(LF, pwmVal(motor_speed) + pwmVal(control));
+    analogWrite(RF, pwmVal(motor_speed) - pwmVal(control));
   } 
   else if (dir == BACKWARD) 
   {
-    analogWrite(LR, pwmVal(-(motor_speed * control)));
-    analogWrite(RR, pwmVal(control * motor_speed));
+    analogWrite(LR, pwmVal(motor_speed) - pwmVal(control));
+    analogWrite(RR, pwmVal(motor_speed) + pwmVal(control));
   }  
 }
 
