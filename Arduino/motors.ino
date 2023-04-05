@@ -1,7 +1,7 @@
 void setupMotors()
 {
-  DDRD = (1 << 5) | (1 << 6);
-  DDRB = (1 << 2) | (1 << 3);
+  DDRD |= (1 << 5) | (1 << 6);
+  DDRB |= (1 << 2) | (1 << 3);
 
   //  /* Our motor set up is:
   //        A1IN - Pin 5, PD5, OC0B
