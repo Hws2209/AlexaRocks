@@ -323,6 +323,7 @@ int main()
 		} else {
 			sendCommand(ch);
 		}
+	}
 
 	printf("Closing connection to Arduino.\n");
 	endSerial();
