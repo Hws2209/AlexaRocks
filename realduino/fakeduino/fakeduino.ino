@@ -6,11 +6,9 @@
 #include <SparkFunLSM9DS1_test.h>
 #include <math.h>
 
-//Alex's configuration constants
+// Alex's configuration constants
 // Number of ticks per revolution from the wheel encoder.
 #define COUNTS_PER_REV      180
-// Wheel circumference in cm.
-// We will use this to calculate forward/backward distance traveled by taking revs * WHEEL_CIRC
 #define WHEEL_CIRC          20.4
 #define ALEX_LENGTH 22.5
 #define ALEX_BREADTH 12.5
@@ -37,6 +35,11 @@ float degree;
 #define S3 7
 #define sensorOut 12
 
+// Motor proportional control
+float motor_speed = 60; // 60% speed
+float proportional = 0.4;
+
+// Colour Sensor Stuff
 float redFrequency = 0;
 float greenFrequency = 0;
 float blueFrequency = 0;
@@ -218,7 +221,9 @@ void loop() {
   gyroZ -= gyroErrorZ; 
   degree += gyroZ*elapsedTime;  
 
-
+  // Execute proportional_control
+  proportional_control(dir);
+  
   // OLD MOTOR CONTROLS
   if (deltaDist > 0 && ((dir == FORWARD && forwardDist > newDist) || (dir == BACKWARD && reverseDist > newDist) || dir == STOP))
   {
