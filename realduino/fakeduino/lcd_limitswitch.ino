@@ -63,7 +63,8 @@ void printLCD(char* string) {
   lcd.print(" ");
   lcd.print(string);
   lcd.print("  ");
-  delay(8000);
+  delay(2000);
+  lcd.clear();
 }
 
 void limitSwitch() {
