@@ -249,6 +249,7 @@ void loop() {
   if (dir == FORWARD || dir == BACKWARD)
   {
     proportional_control(dir);
+    printLCD(dir);
   }
   
   // OLD MOTOR CONTROLS (NOT REALLY NEEDED)
