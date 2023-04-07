@@ -54,11 +54,15 @@ void handleCommand(TPacket *command)
     case COMMAND_F:
       dir = FORWARD;
       degree = 0;
+      val_1 = pwmVal(motor_speed);
+      val_2 = pwmVal(motor_speed);
       inch_forward();
       break;
     case COMMAND_B:
       dir = BACKWARD;
       degree = 0;
+      val_1 = pwmVal(motor_speed);
+      val_2 = pwmVal(motor_speed);
       inch_backward();
       break;
     case COMMAND_L:
@@ -69,16 +73,16 @@ void handleCommand(TPacket *command)
       dir = RIGHT;
       inch_right();
       break;
-    case COMMAND_INCREASE:
-      if (motor_speed < 100) 
-      {
-        motor_speed += 10.0;
-      }
-      break;
     case COMMAND_DECREASE:
-      if (motor_speed > 0)
+      if (motor_speed > 0) 
       {
         motor_speed -= 10.0;
+      }
+      break;
+    case COMMAND_INCREASE:
+      if (motor_speed < 100)
+      {
+        motor_speed += 10.0;
       }
       break;
 
