@@ -119,8 +119,8 @@ void proportional_control(TDirection dir)
 {
   float future = degree - previousdegree;
   float control = degree * proportional; + future * derivative;
-  float val_1 = (float)pwmVal(motor_speed) + control;
-  float val_2 = (float)pwmVal(motor_speed) - control;
+  val_1 += control;
+  val_2 -= control;
 
   if (val_1 < 0) val_1 = 0;
   if (val_1 > 255) val_1 = 255;
