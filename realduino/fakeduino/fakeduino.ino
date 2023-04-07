@@ -37,35 +37,27 @@ float degree;
 
 // Motor proportional control
 float motor_speed = 60; // 60% speed
-float proportional = 0.4;
+float proportional = 0.1;
+float previousdegree = 0;
+float derivative = 0.1;
 
 // Colour Sensor Stuff
 float redFrequency = 0;
 float greenFrequency = 0;
 float blueFrequency = 0;
 
-// Store the ticks from Alex's left and right encoders (NOT REALLY NEEDED)
+// Store the ticks from Alex's left and right encoders.
 volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
+// Left and right encoder ticks for turning
 volatile unsigned long leftForwardTicksTurns, rightForwardTicksTurns, leftReverseTicksTurns, rightReverseTicksTurns;
+// Store the revolutions on Alex's left and right wheels
 volatile unsigned long leftRevs, rightRevs;
+// Forward and backward distance traveled
 volatile unsigned long forwardDist, reverseDist;
 unsigned long deltaDist, newDist;
+//variables to keep track of our turning angle
 unsigned long deltaTicks, targetTicks;
-
-void calcError() {
-  int count = 0;
-  while (count < 200) {
-    if ( imu.gyroAvailable() )
-    {
-      // To read from the gyroscope,  first call the
-      // readGyro() function. When it exits, it'll update the
-      // gx, gy, and gz variables with the most current data.
-      imu.readGyro();
-      gyroErrorZ += imu.calcGyro(imu.gz);
-      count ++;
-    }
-  }
-}
+// Enable pull up resistors on pins 2 and 3
 
 void enablePullups()
 {
@@ -152,12 +144,30 @@ void setupColour()
   digitalWrite(S1, LOW);
 }
 
+void calcError() {
+  int count = 0;
+  while (count < 200) {
+    if ( imu.gyroAvailable() )
+    {
+      // To read from the gyroscope,  first call the
+      // readGyro() function. When it exits, it'll update the
+      // gx, gy, and gz variables with the most current data.
+      imu.readGyro();
+      gyroErrorZ += imu.calcGyro(imu.gz);
+      count ++;
+    }
+  }
+  gyroErrorZ /= 200;
+}
+
 void setup() {
   // put your setup code here, to run once:
+  setupSerial();
+  startSerial();
   Wire.begin();
 
   // IMU Setup
-  if (imu.begin() == false) // with no arguments, this uses default addresses (AG:0x6B, M:0x1E) and i2c port (Wire).
+  /* if (imu.begin() == false) // with no arguments, this uses default addresses (AG:0x6B, M:0x1E) and i2c port (Wire).
   {
     Serial.println("Failed to communicate with LSM9DS1.");
     Serial.println("Double-check wiring.");
@@ -166,31 +176,31 @@ void setup() {
                    "Breakout, but may need to be modified " \
                    "if the board jumpers are.");
     while (1);
-  }
-  calcError();
-  currentTime = micros();
+  } */
 
-  // alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
+  alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
   alexCirc = PI * ALEX_BREADTH;
   cli();
   setupEINT();
-  setupSerial();
-  startSerial();
   setupMotors();
   setupColour();
   startMotors();
   enablePullups();
-  initializeState();
-  sei();
+  initializeState(); 
+  sei(); 
+
+  calcError();
+  currentTime = micros();
 }
 
 void loop() {
 
-  // RECEIVE PACKETS
+  // TPACKET RECEIVE
   TPacket recvPacket; // This holds commands from the Pi
   TResult result = readPacket(&recvPacket);
   if (result == PACKET_OK) {
     handlePacket(&recvPacket);
+    degree = 0;
   }
   else if (result == PACKET_BAD)
   {
@@ -199,9 +209,9 @@ void loop() {
   else if (result == PACKET_CHECKSUM_BAD)
   {
     sendBadChecksum();
-  }
+  } 
 
-  // IMU SENSOR CODE
+  // IMU SENSOR
   if ( imu.gyroAvailable() ) 
   { 
     // To read from the gyroscope,  first call the 
@@ -212,17 +222,17 @@ void loop() {
   }
   previousTime = currentTime; 
   currentTime = micros(); 
-  elapsedTime = (currentTime - previousTime)/1000000; 
+  elapsedTime = (currentTime - previousTime)/ 1000000; 
   gyroZ -= gyroErrorZ; 
-  degree += gyroZ*elapsedTime;  
-
+  degree += gyroZ * elapsedTime;  
+  
   // Execute proportional_control
   if (dir == FORWARD || dir == BACKWARD)
   {
     proportional_control(dir);
-  }
+  } 
   
-  // OLD MOTOR CONTROLS (NOT REALLY NEEDED)
+  // OLD MOTOR CONTROLS
   if (deltaDist > 0 && ((dir == FORWARD && forwardDist > newDist) || (dir == BACKWARD && reverseDist > newDist) || dir == STOP))
   {
     deltaDist = 0;
