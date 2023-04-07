@@ -260,15 +260,17 @@ void sendCommand(char command)
                         sendPacket(&commandPacket);
                         break;
 
-		case 'k':
-		case 'K':
-			commandPacket.command = COMMAND_DECREASE;
-			sendPacket(&commandPacket);
-		
 		case 'j':
 		case 'J':
+			commandPacket.command = COMMAND_DECREASE;
+			sendPacket(&commandPacket);
+			break;
+		
+		case 'h':
+		case 'H':
 			commandPacket.command = COMMAND_INCREASE;
 			sendPacket(&commandPacket);
+			break;
 
 		case 'q':
 		case 'Q':
@@ -325,10 +327,10 @@ int main()
 				ncurse_flag = 0;
 				endwin();
 				exitFlag = 0;
-			} else if (input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'e' || input == 'j' || input == 'k') {      
-				if (input == 'j' & speed < 100) {
+			} else if (input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'e' || input == 'h' || input == 'j') {      
+				if (input == 'h' & speed < 100) {
 					speed += 10;
-				} else if (input == 'k' & speed > 0) {
+				} else if (input == 'j' & speed > 0) {
 					speed -= 10;
 				}
 			        clear();
