@@ -38,8 +38,21 @@ float degree;
 // Motor proportional control
 float motor_speed = 60; // 60% speed
 float proportional = 0.1;
-float previousdegree = 0;
 float derivative = 0.1;
+float previousdegree = 0;
+
+float val_1;
+float val_2;
+
+
+// OLED STUFF
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#define SCREEN_WIDTH 128 // OLED display width,  in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+
+// Declare an SSD1306 display object connected to I2C
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 // Colour Sensor Stuff
 float redFrequency = 0;
@@ -167,11 +180,11 @@ void setup() {
   Wire.begin();
 
   // IMU Setup
-  /* if (imu.begin() == false) // with no arguments, this uses default addresses (AG:0x6B, M:0x1E) and i2c port (Wire).
+  /*if (imu.begin() == false) // with no arguments, this uses default addresses (AG:0x6B, M:0x1E) and i2c port (Wire).
   {
-    Serial.println("Failed to communicate with LSM9DS1.");
-    Serial.println("Double-check wiring.");
-    Serial.println("Default settings in this sketch will " \
+    //Serial.println("Failed to communicate with LSM9DS1.");
+    //Serial.println("Double-check wiring.");
+    //Serial.println("Default settings in this sketch will " \
                    "work for an out of the box LSM9DS1 " \
                    "Breakout, but may need to be modified " \
                    "if the board jumpers are.");
@@ -180,15 +193,24 @@ void setup() {
 
   alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
   alexCirc = PI * ALEX_BREADTH;
+  
   cli();
-  setupEINT();
+  //setupEINT();
   setupMotors();
   setupColour();
   startMotors();
-  enablePullups();
+  // enablePullups();
   initializeState(); 
   sei(); 
 
+  /*oled.clearDisplay(); // clear display
+  oled.setTextSize(3);          // text size
+  oled.setTextColor(WHITE);  
+
+  oled.setCursor(0, 10);        // position to display
+  oled.println("RED!"); // text to display
+  oled.display(); */
+  
   calcError();
   currentTime = micros();
 }
