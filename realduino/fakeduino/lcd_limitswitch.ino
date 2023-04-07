@@ -154,9 +154,11 @@ char* detectColour()
     return "empty";
   } else if (greenFrequency / redFrequency > 1.8) {
     sendMessage("RED");
+    printLCD("red");
     return "red";
   } else if (redFrequency - greenFrequency > 60) {
     sendMessage("GREEN");
+    printLCD("green");
     return "green";
   } else {
     sendMessage("???");
@@ -268,8 +270,8 @@ void loop() {
     stop();
   } 
 
-  char *colour = detectColour();
+  /*char *colour = detectColour();
   if (colour == "red" || colour == ""green") {
     printLCD(colour);
-  }
+  }*/
 }
