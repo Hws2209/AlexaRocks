@@ -50,6 +50,7 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_DETECT_COLOUR:
       detectColour();
+      sendColour();
       break;
     case COMMAND_F:
       dir = FORWARD;
