@@ -29,7 +29,7 @@ void setupEINT()
   // Use bare-metal to configure pins 2 and 3 to be
   // falling edge triggered. Remember to enable
   // the INT0 and INT1 interrupts.
-  EICRA = 0b1010;
+  EICRA = 0b1110;
   EIMSK |= 0b11;
 
 }
@@ -45,5 +45,6 @@ ISR(INT0_vect)
 
 ISR(INT1_vect)
 {
-  rightISR();
+  // rightISR();
+  sendMessage("TOUCHED");
 }
