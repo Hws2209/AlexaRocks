@@ -195,11 +195,11 @@ void setup() {
   alexCirc = PI * ALEX_BREADTH;
   
   cli();
-  //setupEINT();
+  setupEINT();
   setupMotors();
   setupColour();
   startMotors();
-  // enablePullups();
+  enablePullups();
   initializeState(); 
   sei(); 
 
