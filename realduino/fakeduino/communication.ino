@@ -17,7 +17,6 @@ void waitForHello()
       if (hello.packetType == PACKET_TYPE_HELLO)
       {
 
-
         sendOK();
         exit = 1;
       }
@@ -66,8 +65,19 @@ void sendStatus()
   statusPacket.params[8] = forwardDist;
   statusPacket.params[9] = reverseDist;
   sendResponse(&statusPacket);
-
 }
+
+void sendColour()
+{
+  TPacket colourPacket;
+  colourPacket.packetType = PACKET_TYPE_RESPONSE;
+  colourPacket.command = RESP_COLOUR;
+  colourPacket.params[10] = (int)redFrequency;
+  colourPacket.params[11] = (int)greenFrequency;
+  colourPacket.params[12] = (int)blueFrequency;
+  sendResponse(&colourPacket);
+}
+
 void sendOK()
 {
   TPacket okPacket;
