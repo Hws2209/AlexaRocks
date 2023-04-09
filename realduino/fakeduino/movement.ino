@@ -118,7 +118,7 @@ void right(float ang, float speed)
 void proportional_control(TDirection dir)
 {
   float future = degree - previousdegree;
-  float control = degree * proportional; + future * derivative;
+  float control = degree * proportional + future * derivative;
   val_1 += control;
   val_2 -= control;
 
