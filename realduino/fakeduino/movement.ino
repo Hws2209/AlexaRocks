@@ -47,7 +47,7 @@ void reverse(float dist, float speed)
     deltaDist = 9999999;
 
   newDist = reverseDist + deltaDist;
-  
+
   dir = BACKWARD;
   int val = pwmVal(speed);
 
@@ -115,66 +115,77 @@ void right(float ang, float speed)
   analogWrite(RF, 0);
 }
 
-void proportional_control(TDirection dir)
+/* void proportional_control(TDirection dir)
 {
   float future = degree - previousdegree;
-  float control = degree * proportional + future * derivative;
-  val_1 += control;
-  val_2 -= control;
+  int control = int(round(degree * proportional)); // future * derivative;
 
-  if (val_1 < 0) val_1 = 0;
-  if (val_1 > 255) val_1 = 255;
-  if (val_2 < 0) val_2 = 0;
-  if (val_2 > 255) val_2 = 255;
+  if (dir == FORWARD)
+  {
+    if (degree > 0.3)
+    {
+      val_1 -= control;
+    } else if (degree < -0.3) {
+      val_1 += control;
+    }
+
+    if (val_1 < 0) val_1 = 0;
+    if (val_1 > 255) val_1 = 255;
   
-  if (dir == FORWARD) 
-  {
-    analogWrite(LF, (int)val_2);
-    analogWrite(RF, (int)val_1);
+    analogWrite(RF, val_1);
     previousdegree = degree;
-  } 
-  else if (dir == BACKWARD) 
+  }
+  else if (dir == BACKWARD)
   {
-    analogWrite(LR, (int)val_1);
-    analogWrite(RR, (int)val_2);
+    if (degree > 0.3)
+    {
+      val_1 -= control;
+    } else if (degree < -0.3) {
+      val_1 += control;
+    }
+
+    if (val_1 < 0) val_1 = 0;
+    if (val_1 > 255) val_1 = 255;
+  
+    analogWrite(RR, val_1);
     previousdegree = degree;
-  }  
-}
+  }
+} */
 
 void inch_forward()
-{   
-    //int val = pwmVal(motor_speed);
-    //analogWrite(LF,val);
-    //analogWrite(RF,val);
-    analogWrite(LR, 0);
-    analogWrite(RR, 0);
+{
+  int val = pwmVal(motor_speed);
+  analogWrite(LF,val);
+  analogWrite(RF,val);
+  analogWrite(LR, 0);
+  analogWrite(RR, 0);
 }
 
 void inch_backward()
 {
-    //int val = pwmVal(motor_speed);
-    analogWrite(LF,0);
-    analogWrite(RF,0);
-    //analogWrite(LR, val);
-    //analogWrite(RR, val);
+  int val = pwmVal(motor_speed);
+  analogWrite(LF, 0);
+  analogWrite(RF, 0);
+  analogWrite(LR, val);
+  analogWrite(RR, val);
 }
 
 void inch_left()
 {
-    int val = pwmVal(motor_speed);
-    analogWrite(LF, 0);
-    analogWrite(RF, val);
-    analogWrite(LR, val);
-    analogWrite(RR, 0);
+  int val = pwmVal(motor_speed);
+  analogWrite(LF, 0);
+  analogWrite(RF, val);
+  analogWrite(LR, val);
+  analogWrite(RR, 0);
 }
 
 void inch_right()
 {
-    int val = pwmVal(motor_speed);
-    analogWrite(LF,val);
-    analogWrite(RF,0);
-    analogWrite(LR,0);
-    analogWrite(RR,val);
+  int val = pwmVal(motor_speed);
+  analogWrite(LF, val);
+  analogWrite(RF, 0);
+  analogWrite(LR, 0);
+  analogWrite(RR, val);
 }
 
 // Stop Alex. To replace with bare-metal code later.
