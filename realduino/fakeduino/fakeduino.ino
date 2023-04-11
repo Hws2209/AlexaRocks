@@ -38,39 +38,40 @@ float degree;
 // Motor proportional control
 float motor_speed = 60; // 60% speed
 float proportional = 0.1;
-float derivative = 0.1;
+float derivative = 0.01;
 float previousdegree = 0;
 
-float val_1;
-float val_2;
-
+int val_1;
+int pd_counter = 0;
 
 // OLED STUFF
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-#define SCREEN_WIDTH 128 // OLED display width,  in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+/*#include <Adafruit_GFX.h>
+  #include <Adafruit_SSD1306.h>
+  #define SCREEN_WIDTH 128 // OLED display width,  in pixels
+  #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-// Declare an SSD1306 display object connected to I2C
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+  // Declare an SSD1306 display object connected to I2C
+  Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1); */
+
+// Ultrasonic
+const int trigPin = 3;
+const int echoPin = 2;
+long duration;
+float distance;
+
+
 
 // Colour Sensor Stuff
 float redFrequency = 0;
 float greenFrequency = 0;
 float blueFrequency = 0;
 
-// Store the ticks from Alex's left and right encoders.
 volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
-// Left and right encoder ticks for turning
 volatile unsigned long leftForwardTicksTurns, rightForwardTicksTurns, leftReverseTicksTurns, rightReverseTicksTurns;
-// Store the revolutions on Alex's left and right wheels
 volatile unsigned long leftRevs, rightRevs;
-// Forward and backward distance traveled
 volatile unsigned long forwardDist, reverseDist;
 unsigned long deltaDist, newDist;
-//variables to keep track of our turning angle
 unsigned long deltaTicks, targetTicks;
-// Enable pull up resistors on pins 2 and 3
 
 void enablePullups()
 {
@@ -90,10 +91,10 @@ int pwmVal(float speed)
   return (int) ((speed / 100.0) * 255.0);
 }
 
-void initializeState()
-{
+/* void initializeState()
+  {
   clearCounters();
-}
+  } */
 
 void detectColour()
 {
@@ -130,17 +131,29 @@ void detectColour()
   }
   delay(100);
 
-  if (redFrequency + greenFrequency + blueFrequency < 650) {
+  if (redFrequency + greenFrequency + blueFrequency < 1200) {
     sendMessage("WHITE");
-  } else if (redFrequency + greenFrequency + blueFrequency > 1800) {
-    sendMessage("EMPTY");
-  } else if (greenFrequency / redFrequency > 1.8) {
+  } else if (greenFrequency / redFrequency > 2.0 && greenFrequency > blueFrequency) {
     sendMessage("RED");
-  } else if (redFrequency - greenFrequency > 60) {
+  } else if (greenFrequency < redFrequency && greenFrequency < blueFrequency) {
     sendMessage("GREEN");
   } else {
     sendMessage("???");
   }
+}
+
+void ultrasonic() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+
+  distance = duration / 58.0;
+
 }
 
 void setupColour()
@@ -173,6 +186,38 @@ void calcError() {
   gyroErrorZ /= 200;
 }
 
+void proportional_control(TDirection dir)
+{
+  int deltaAngle = round(-degree);
+  int targetGyroZ;
+
+  targetGyroZ = 2 * deltaAngle;
+
+  if (round(targetGyroZ - gyroZ) == 0) {
+    ;
+  } else if (targetGyroZ > gyroZ) {
+    if (dir == FORWARD) {
+      val_1 += 1;
+      if (val_1 > 255) val_1 = 255;
+      analogWrite(RF, val_1);
+    } else {
+      val_1 -= 1;
+      if (val_1 < 0) val_1 = 0;
+      analogWrite(RR, val_1); //would increase GyroZ
+    }
+  } else {
+    if (dir == FORWARD) {
+      val_1 -= 1;
+      if (val_1 < 0) val_1 = 0;
+      analogWrite(RF, val_1);
+    } else {
+      val_1 += 1;
+      if (val_1 > 255) val_1 = 255;
+      analogWrite(RR, val_1); //would increase GyroZ
+    }
+  }
+}
+
 void setup() {
   // put your setup code here, to run once:
   setupSerial();
@@ -180,39 +225,36 @@ void setup() {
   Wire.begin();
 
   // IMU Setup
-  /*if (imu.begin() == false) // with no arguments, this uses default addresses (AG:0x6B, M:0x1E) and i2c port (Wire).
-  {
-    //Serial.println("Failed to communicate with LSM9DS1.");
-    //Serial.println("Double-check wiring.");
-    //Serial.println("Default settings in this sketch will " \
-                   "work for an out of the box LSM9DS1 " \
-                   "Breakout, but may need to be modified " \
-                   "if the board jumpers are.");
-    while (1);
-  } */
-
   alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
   alexCirc = PI * ALEX_BREADTH;
-  
+
   cli();
   setupEINT();
   setupMotors();
   setupColour();
   startMotors();
-  enablePullups();
-  initializeState(); 
-  sei(); 
+  // enablePullups();
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  // initializeState();
+  sei();
 
   /*oled.clearDisplay(); // clear display
-  oled.setTextSize(3);          // text size
-  oled.setTextColor(WHITE);  
+    oled.setTextSize(3);          // text size
+    oled.setTextColor(WHITE);
 
-  oled.setCursor(0, 10);        // position to display
-  oled.println("RED!"); // text to display
-  oled.display(); */
-  
+    oled.setCursor(0, 10);        // position to display
+    oled.println("RED!"); // text to display
+    oled.display(); */
+
   calcError();
   currentTime = micros();
+
+  if (imu.begin() == false)
+  {
+
+    while (1);
+  }
 }
 
 void loop() {
@@ -222,7 +264,6 @@ void loop() {
   TResult result = readPacket(&recvPacket);
   if (result == PACKET_OK) {
     handlePacket(&recvPacket);
-    degree = 0;
   }
   else if (result == PACKET_BAD)
   {
@@ -231,29 +272,37 @@ void loop() {
   else if (result == PACKET_CHECKSUM_BAD)
   {
     sendBadChecksum();
-  } 
-
-  // IMU SENSOR
-  if ( imu.gyroAvailable() ) 
-  { 
-    // To read from the gyroscope,  first call the 
-    // readGyro() function. When it exits, it'll update the 
-    // gx, gy, and gz variables with the most current data. 
-    imu.readGyro(); 
-    gyroZ = imu.calcGyro(imu.gz); 
   }
-  previousTime = currentTime; 
-  currentTime = micros(); 
-  elapsedTime = (currentTime - previousTime)/ 1000000; 
-  gyroZ -= gyroErrorZ; 
-  degree += gyroZ * elapsedTime;  
-  
+
+
+  if ( imu.gyroAvailable() )
+  {
+    // To read from the gyroscope,  first call the
+    // readGyro() function. When it exits, it'll update the
+    // gx, gy, and gz variables with the most current data.
+    imu.readGyro();
+    gyroZ = imu.calcGyro(imu.gz);
+  }
+  previousTime = currentTime;
+  currentTime = micros();
+  elapsedTime = (currentTime - previousTime) / 1000000;
+  gyroZ -= gyroErrorZ;
+  degree += gyroZ * elapsedTime;
+
   // Execute proportional_control
   if (dir == FORWARD || dir == BACKWARD)
   {
-    proportional_control(dir);
-  } 
-  
+    if (pd_counter = 50)
+    {
+      proportional_control(dir);
+      pd_counter = 0;
+    } else
+    {
+      pd_counter++;
+    }
+  }
+
+
   // OLD MOTOR CONTROLS
   if (deltaDist > 0 && ((dir == FORWARD && forwardDist > newDist) || (dir == BACKWARD && reverseDist > newDist) || dir == STOP))
   {
@@ -267,5 +316,5 @@ void loop() {
     deltaTicks = 0;
     targetTicks = 0;
     stop();
-  } 
+  }
 }
