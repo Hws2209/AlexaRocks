@@ -156,7 +156,7 @@ void inch_forward()
 {
   int val = pwmVal(motor_speed);
   analogWrite(LF,val);
-  analogWrite(RF,val);
+  analogWrite(RF,(int)(0.9 * val));
   analogWrite(LR, 0);
   analogWrite(RR, 0);
 }
