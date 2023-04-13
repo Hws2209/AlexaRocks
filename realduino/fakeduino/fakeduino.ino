@@ -59,8 +59,6 @@ const int echoPin = 2;
 long duration;
 float distance;
 
-
-
 // Colour Sensor Stuff
 float redFrequency = 0;
 float greenFrequency = 0;
@@ -191,7 +189,7 @@ void proportional_control(TDirection dir)
   int deltaAngle = round(-degree);
   int targetGyroZ;
 
-  targetGyroZ = 2 * deltaAngle;
+  targetGyroZ = (int)round(1.3 * deltaAngle);
 
   if (round(targetGyroZ - gyroZ) == 0) {
     ;
@@ -290,9 +288,9 @@ void loop() {
   degree += gyroZ * elapsedTime;
 
   // Execute proportional_control
-  if (dir == FORWARD || dir == BACKWARD)
+  /* if (dir == FORWARD || dir == BACKWARD)
   {
-    if (pd_counter = 50)
+    if (pd_counter = 1000)
     {
       proportional_control(dir);
       pd_counter = 0;
@@ -300,9 +298,9 @@ void loop() {
     {
       pd_counter++;
     }
-  }
+  } */
 
-
+  /*
   // OLD MOTOR CONTROLS
   if (deltaDist > 0 && ((dir == FORWARD && forwardDist > newDist) || (dir == BACKWARD && reverseDist > newDist) || dir == STOP))
   {
@@ -316,5 +314,5 @@ void loop() {
     deltaTicks = 0;
     targetTicks = 0;
     stop();
-  }
+  } */
 }
