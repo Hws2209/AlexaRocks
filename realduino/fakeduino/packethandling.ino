@@ -50,20 +50,23 @@ void handleCommand(TPacket *command)
       break;
     case COMMAND_DETECT_COLOUR:
       detectColour();
+      ultrasonic();
       sendColour();
       break;
     case COMMAND_F:
       dir = FORWARD;
       degree = 0;
+      pd_counter = 0;
+      gyroZ = 0;
       val_1 = pwmVal(motor_speed);
-      val_2 = pwmVal(motor_speed);
       inch_forward();
       break;
     case COMMAND_B:
       dir = BACKWARD;
       degree = 0;
+      pd_counter = 0;
+      gyroZ = 0;
       val_1 = pwmVal(motor_speed);
-      val_2 = pwmVal(motor_speed);
       inch_backward();
       break;
     case COMMAND_L:
