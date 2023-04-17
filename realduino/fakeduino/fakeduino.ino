@@ -64,6 +64,10 @@ float redFrequency = 0;
 float greenFrequency = 0;
 float blueFrequency = 0;
 
+double rgb[3] = {0, 0, 0};
+double hue;
+
+
 volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
 volatile unsigned long leftForwardTicksTurns, rightForwardTicksTurns, leftReverseTicksTurns, rightReverseTicksTurns;
 volatile unsigned long leftRevs, rightRevs;
@@ -93,6 +97,35 @@ int pwmVal(float speed)
   {
   clearCounters();
   } */
+
+double calcHue()
+{
+  double max = rgb[0];
+  double min = rgb[0];
+  for (int i = 1; i < 3; i++) 
+  {
+    if (max < rgb[i])
+    {
+      max = rgb[i];
+    } else if (min > rgb[i]) 
+    {
+      min = rgb[i];
+    }
+  }
+
+  if (max == rgb[0])
+  {
+    return ((rgb[1] - rgb[2]) / (max - min));
+  }
+  if (max == rgb[1])
+  {
+    return 2.0 + ((rgb[2] - rgb[0]) / (max - min));
+  }
+  if (max == rgb[2])
+  {
+    return 4.0 + ((rgb[0] - rgb[1]) / (max - min));
+  }
+}
 
 void detectColour()
 {
@@ -129,6 +162,10 @@ void detectColour()
   }
   delay(100);
 
+  rgb[0] = map(redFrequency, 210, 1500, 255, 0);
+  rgb[1] = map(greenFrequency, 250, 2400, 255, 0);
+  rgb[2] = map(blueFrequency, 200, 2200, 255, 0);
+
   if (redFrequency + greenFrequency + blueFrequency < 1200) {
     sendMessage("WHITE");
   } else if (greenFrequency / redFrequency > 2.0 && greenFrequency > blueFrequency) {
@@ -138,7 +175,9 @@ void detectColour()
   } else {
     sendMessage("???");
   }
+  hue = calcHue() * 60;
 }
+
 
 void ultrasonic() {
   digitalWrite(trigPin, LOW);
@@ -288,7 +327,7 @@ void loop() {
   degree += gyroZ * elapsedTime;
 
   // Execute proportional_control
-  /* if (dir == FORWARD || dir == BACKWARD)
+  if (dir == FORWARD || dir == BACKWARD)
   {
     if (pd_counter = 1000)
     {
@@ -298,7 +337,7 @@ void loop() {
     {
       pd_counter++;
     }
-  } */
+  } 
 
   /*
   // OLD MOTOR CONTROLS
