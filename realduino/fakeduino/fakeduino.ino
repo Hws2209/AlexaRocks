@@ -162,7 +162,6 @@ void setup() {
 
   if (imu.begin() == false)
   {
-
     while (1);
   }
 }
