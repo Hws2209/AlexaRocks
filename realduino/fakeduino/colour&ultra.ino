@@ -76,10 +76,6 @@ void detectColour()
   }
   delay(100);
 
-  rgb[0] = map(redFrequency, 210, 1500, 255, 0);
-  rgb[1] = map(greenFrequency, 250, 2400, 255, 0);
-  rgb[2] = map(blueFrequency, 200, 2200, 255, 0);
-
   if (redFrequency + greenFrequency + blueFrequency < 1200) {
     sendMessage("WHITE");
   } else if (greenFrequency / redFrequency > 2.0 && greenFrequency > blueFrequency) {
@@ -89,6 +85,10 @@ void detectColour()
   } else {
     sendMessage("???");
   }
+  
+  rgb[0] = map(redFrequency, 210, 1500, 255, 0);
+  rgb[1] = map(greenFrequency, 250, 2400, 255, 0);
+  rgb[2] = map(blueFrequency, 200, 2200, 255, 0);
   hue = calcHue() * 60;
 }
 
