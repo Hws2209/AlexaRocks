@@ -40,11 +40,10 @@ void setupEINT()
 
 ISR(INT0_vect)
 {
-  leftISR();
+  // leftISR();
 }
 
 ISR(INT1_vect)
 {
   // rightISR();
-  sendMessage("TOUCHED");
 }
