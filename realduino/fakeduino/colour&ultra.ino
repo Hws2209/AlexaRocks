@@ -103,5 +103,4 @@ void ultrasonic() {
   duration = pulseIn(echoPin, HIGH);
 
   distance = duration / 58.0;
-
 }
