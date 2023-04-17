@@ -1,4 +1,3 @@
-
 // Routines to create a TLS client
 #include "make_tls_client.h"
 
@@ -102,12 +101,8 @@ void sendData(void *conn, const char *buffer, int len)
         printf("\nSENDING %d BYTES DATA\n\n", len);
         if(networkActive)
         {
-                /* TODO: Insert SSL write here to write buffer to network */
+                // SSL write to write buffer to network
                 c = SSL_write((SSL*)conn,buffer,len);
-
-
-
-                /* END TODO */
                 networkActive = (c > 0);
         }
 }
@@ -119,13 +114,9 @@ void *readerThread(void *conn)
 
         while(networkActive)
         {
-                /* TODO: Insert SSL read here into buffer */
+                // SSL read into buffer
                 len = SSL_read((SSL*)conn,buffer,sizeof(buffer));
-
-        printf("read %d bytes from server.\n", len);
-
-                /* END TODO */
-
+                printf("read %d bytes from server.\n", len);
                 networkActive = (len > 0);
 
                 if(networkActive)
@@ -134,10 +125,8 @@ void *readerThread(void *conn)
 
         printf("Exiting network listener thread\n");
     
-    /* TODO: Stop the client loop and call EXIT_THREAD */
-
+        // Stop the client loop and call EXIT_THREAD
         EXIT_THREAD(conn);
-    /* END TODO */
 }
 
 void flushInput()
@@ -212,26 +201,20 @@ void *writerThread(void *conn)
 
         printf("Exiting keyboard thread\n");
 
-    /* TODO: Stop the client loop and call EXIT_THREAD */
+        // Stop the client loop and call EXIT_THREAD
         EXIT_THREAD(conn);
-    /* END TODO */
 }
 
-/* TODO: #define filenames for the client private key, certificatea,
-   CA filename, etc. that you need to create a client */
+// #define filenames for the client private key, certificate, CA filename, etc.
 #define KEY_FNAME "laptop.key"
 #define CERT_FNAME "laptop.crt"
 #define CA_CERT_NAME "signing.pem"
 #define CLIENT_NAME "rock.alexa.com"
 
-
-/* END TODO */
 void connectToServer(const char *serverName, int portNum)
 {
-    /* TODO: Create a new client */
-    
-        createClient(serverName, portNum, 1, CA_CERT_NAME, CLIENT_NAME, 1, CERT_FNAME, KEY_FNAME, readerThread, writerThread);
-    /* END TODO */
+    // Create a new client
+    createClient(serverName, portNum, 1, CA_CERT_NAME, CLIENT_NAME, 1, CERT_FNAME, KEY_FNAME, readerThread, writerThread);
 }
 
 int main(int ac, char **av)
@@ -244,11 +227,8 @@ int main(int ac, char **av)
 
     networkActive = 1;
     connectToServer(av[1], atoi(av[2]));
+        
+    // A while loop to prevent main from exiting while the client loop is running
     while(client_is_running());
-    /* TODO: Add in while loop to prevent main from exiting while the
-    client loop is running */
-
-
-    /* END TODO */
-        printf("\nMAIN exiting\n\n");
+    printf("\nMAIN exiting\n\n");
 }
