@@ -83,12 +83,10 @@ int pwmVal(float speed)
   return (int) ((speed / 100.0) * 255.0);
 }
 
-/* 
 void initializeState()
 {
   clearCounters();
 } 
-*/
 
 void calcError() {
   int count = 0;
