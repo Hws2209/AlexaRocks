@@ -58,7 +58,6 @@ float blueFrequency = 0;
 double rgb[3] = {0, 0, 0};
 double hue;
 
-
 volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
 volatile unsigned long leftForwardTicksTurns, rightForwardTicksTurns, leftReverseTicksTurns, rightReverseTicksTurns;
 volatile unsigned long leftRevs, rightRevs;
@@ -169,7 +168,6 @@ void detectColour()
   hue = calcHue() * 60;
 }
 
-
 void ultrasonic() {
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
@@ -266,15 +264,7 @@ void setup() {
   pinMode(echoPin, INPUT);
   // initializeState();
   sei();
-
-  /*oled.clearDisplay(); // clear display
-    oled.setTextSize(3);          // text size
-    oled.setTextColor(WHITE);
-
-    oled.setCursor(0, 10);        // position to display
-    oled.println("RED!"); // text to display
-    oled.display(); */
-
+  
   calcError();
   currentTime = micros();
 
@@ -286,7 +276,6 @@ void setup() {
 }
 
 void loop() {
-
   // TPACKET RECEIVE
   TPacket recvPacket; // This holds commands from the Pi
   TResult result = readPacket(&recvPacket);
@@ -301,7 +290,6 @@ void loop() {
   {
     sendBadChecksum();
   }
-
 
   if ( imu.gyroAvailable() )
   {
