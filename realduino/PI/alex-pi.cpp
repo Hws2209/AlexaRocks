@@ -53,6 +53,8 @@ void handleStatus(TPacket *packet)
 void handleColour(TPacket *packet)
 {
         printf("RGB: %d  %d  %d", packet->params[10], packet->params[11], packet->params[12]);
+        printf("distance: %d", packet->params[13]);
+        printf("hue: %d", packet->params[14]);
 }
 
 void handleResponse(TPacket *packet)
