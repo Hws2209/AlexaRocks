@@ -14,15 +14,11 @@
 #define SERVER_PORT			5000
 
 
-/* TODO: #define constants for the  filenames for Alex's private key, certificate, CA certificate name,
-        and the Common Name for your laptop */
-
+// #define constants for filenames for Alex's private key, certificate, CA certificate name, and the Common Name
 #define KEY_FNAME "alex.key"
 #define CERT_FNAME "alex.crt"
 #define CA_CERT_FNAME "signing.pem"
 #define CLIENT_NAME "rock.alexa.com"
-
-/* END TODO */
 
 // Our network buffer consists of 1 byte of packet type, and 128 bytes of data
 #define BUF_LEN				129
@@ -192,13 +188,8 @@ void sendNetworkData(const char *data, int len)
 		printf("WRITING TO CLIENT\n");
         
         if(tls_conn != NULL) {
-            /* TODO: Implement SSL write here to write data to the network. Note that
-              handleNetworkData should already have set tls_conn to point to the TLS
-              connection we want to write to. */
+            // SSL write to write data to the network.
 		c = SSL_write((SSL *)tls_conn, data, len);
-
-            /* END TODO */
-
        }
 
 		// Network is still active if we can write more then 0 bytes.
@@ -303,11 +294,10 @@ void *worker(void *conn)
 	
 	while(networkActive)
 	{
-		/* TODO: Implement SSL read into buffer */
+		// Implement SSL read into buffer
 
 		len = sslRead(conn, buffer, sizeof(buffer));
 
-		/* END TODO */
 		// As long as we are getting data, network is active
 		networkActive=(len > 0);
 
@@ -356,18 +346,13 @@ int main()
 
     networkActive = 1;
 
-    /* TODO: Call createServer with the necessary parameters to do client authentication and to send
-
-        Alex's certificate. Use the #define names you defined earlier  */
+    // Call createServer with necessary parameters to do client authentication and to send Alex's certificate.
 
     createServer(KEY_FNAME, CERT_FNAME, SERVER_PORT, &worker, CA_CERT_FNAME, CLIENT_NAME, 1);
-
-    /* TODO END */
 
 	printf("DONE. Sending HELLO to Arduino\n");
 	sendHello();
 	printf("DONE.\n");
-
 
     // Loop while the server is active
     while(server_is_running());
