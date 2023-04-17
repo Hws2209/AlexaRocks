@@ -58,7 +58,7 @@ typedef enum
   BACKWARD = 2,
   LEFT = 3,
   RIGHT = 4
-}TDirection;
+} TDirection;
 
 volatile TDirection dir = STOP;
 #endif
