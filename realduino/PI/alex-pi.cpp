@@ -337,9 +337,9 @@ int main()
                                 endwin();
                                 exitFlag = 0;
                         } else if (input == 'w' || input == 'a' || input == 's' || input == 'd' || input == 'e' || input == 'j' || input == 'k') {
-                                if (input == 'j' & speed < 100) {
+                                if (input == 'j' && speed < 100) {
                                         speed += 10;
-                                } else if (input == 'k' & speed > 0) {
+                                } else if (input == 'k' && speed > 0) {
                                         speed -= 10;
                                 }
                                 clear();
