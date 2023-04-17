@@ -44,15 +44,6 @@ float previousdegree = 0;
 int val_1;
 int pd_counter = 0;
 
-// OLED STUFF
-/*#include <Adafruit_GFX.h>
-  #include <Adafruit_SSD1306.h>
-  #define SCREEN_WIDTH 128 // OLED display width,  in pixels
-  #define SCREEN_HEIGHT 64 // OLED display height, in pixels
-
-  // Declare an SSD1306 display object connected to I2C
-  Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1); */
-
 // Ultrasonic
 const int trigPin = 3;
 const int echoPin = 2;
@@ -338,9 +329,9 @@ void loop() {
       pd_counter++;
     }
   } 
-
-  /*
+  
   // OLD MOTOR CONTROLS
+  /*
   if (deltaDist > 0 && ((dir == FORWARD && forwardDist > newDist) || (dir == BACKWARD && reverseDist > newDist) || dir == STOP))
   {
     deltaDist = 0;
@@ -353,5 +344,6 @@ void loop() {
     deltaTicks = 0;
     targetTicks = 0;
     stop();
-  } */
+  } 
+  */
 }
