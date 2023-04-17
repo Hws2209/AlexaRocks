@@ -20,10 +20,6 @@ void forward(float dist, float speed)
   dir = FORWARD;
   int val = pwmVal(speed);
 
-  // For now we will ignore dist and move
-  // forward indefinitely. We will fix this
-  // in Week 9.
-
   // LF = Left forward pin, LR = Left reverse pin
   // RF = Right forward pin, RR = Right reverse pin
   // This will be replaced later with bare-metal code.
@@ -50,10 +46,6 @@ void reverse(float dist, float speed)
 
   dir = BACKWARD;
   int val = pwmVal(speed);
-
-  // For now we will ignore dist and
-  // reverse indefinitely. We will fix this
-  // in Week 9.
 
   // LF = Left forward pin, LR = Left reverse pin
   // RF = Right forward pin, RR = Right reverse pin
@@ -105,7 +97,6 @@ void right(float ang, float speed)
   dir = RIGHT;
   int val = pwmVal(speed);
 
-  // For now we will ignore ang. We will fix this in Week 9.
   // We will also replace this code with bare-metal later.
   // To turn right we reverse the right wheel and move
   // the left wheel forward.
@@ -115,7 +106,7 @@ void right(float ang, float speed)
   analogWrite(RF, 0);
 }
 
-/* void proportional_control(TDirection dir)
+void proportional_control(TDirection dir)
 {
   float future = degree - previousdegree;
   int control = int(round(degree * proportional)); // future * derivative;
@@ -150,7 +141,7 @@ void right(float ang, float speed)
     analogWrite(RR, val_1);
     previousdegree = degree;
   }
-} */
+} 
 
 void inch_forward()
 {
