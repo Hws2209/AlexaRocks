@@ -72,9 +72,9 @@ void sendColour()
   TPacket colourPacket;
   colourPacket.packetType = PACKET_TYPE_RESPONSE;
   colourPacket.command = RESP_COLOUR;
-  colourPacket.params[10] = (int)redFrequency;
-  colourPacket.params[11] = (int)greenFrequency;
-  colourPacket.params[12] = (int)blueFrequency;
+  colourPacket.params[10] = (uint32_t)redFrequency;
+  colourPacket.params[11] = (uint32_t)greenFrequency;
+  colourPacket.params[12] = (uint32_t)blueFrequency;
   sendResponse(&colourPacket);
 }
 
