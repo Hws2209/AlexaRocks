@@ -75,6 +75,8 @@ void sendColour()
   colourPacket.params[10] = (uint32_t)redFrequency;
   colourPacket.params[11] = (uint32_t)greenFrequency;
   colourPacket.params[12] = (uint32_t)blueFrequency;
+  colourPacket.params[13] = (uint32_t)distance;
+  colourPacket.params[14] = (uint32_t)hue;
   sendResponse(&colourPacket);
 }
 
