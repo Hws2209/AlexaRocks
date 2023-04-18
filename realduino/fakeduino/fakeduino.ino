@@ -112,7 +112,6 @@ void setup() {
   Wire.begin();
 
   cli();
-  setupEINT();
   setupMotors();
   setupColour();
   startMotors();
