@@ -1,5 +1,7 @@
 void setupColour()
 {
+  // Configure sensorOut as INPUT,
+  // S0, S1, S2, S3 as OUTPUT
   DDRB &= ~(0b00010000);
   DDRB |= 0b00100011;
   DDRD |= 0b10000000;
