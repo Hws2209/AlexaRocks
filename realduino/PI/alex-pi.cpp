@@ -24,8 +24,6 @@ void handleColour(TPacket *packet)
 	printf("Hue: %d\n", packet->params[14]);
 }
 
-
-
 void handleError(TResult error)
 {
 	switch(error)
@@ -43,22 +41,6 @@ void handleError(TResult error)
 	}
 }
 
-void handleStatus(TPacket *packet)
-{
-	printf("\n ------- ALEX STATUS REPORT ------- \n\n");
-	printf("Left Forward Ticks:\t\t%d\n", packet->params[0]);
-	printf("Right Forward Ticks:\t\t%d\n", packet->params[1]);
-	printf("Left Reverse Ticks:\t\t%d\n", packet->params[2]);
-	printf("Right Reverse Ticks:\t\t%d\n", packet->params[3]);
-	printf("Left Forward Ticks Turns:\t%d\n", packet->params[4]);
-	printf("Right Forward Ticks Turns:\t%d\n", packet->params[5]);
-	printf("Left Reverse Ticks Turns:\t%d\n", packet->params[6]);
-	printf("Right Reverse Ticks Turns:\t%d\n", packet->params[7]);
-	printf("Forward Distance:\t\t%d\n", packet->params[8]);
-	printf("Reverse Distance:\t\t%d\n", packet->params[9]);
-	printf("\n---------------------------------------\n\n");
-}
-
 void handleResponse(TPacket *packet)
 {
 	// The response code is stored in command
@@ -66,10 +48,6 @@ void handleResponse(TPacket *packet)
 	{
 		case RESP_OK:
 			printf("Command OK\n");
-		break;
-
-		case RESP_STATUS:
-			handleStatus(packet);
 		break;
 
 		case RESP_COLOUR:
@@ -180,14 +158,6 @@ void flushInput()
 	while((c = getchar()) != '\n' && c != EOF);
 }
 
-void getParams(TPacket *commandPacket)
-{
-	printf("Enter distance/angle in cm/degrees (e.g. 50) and power in %% (e.g. 75) separated by space.\n");
-	printf("E.g. 50 75 means go at 50 cm at 75%% power for forward/backward, or 50 degrees left or right turn at 75%%  power\n");
-	scanf("%d %d", &commandPacket->params[0], &commandPacket->params[1]);
-	flushInput();
-}
-
 void sendCommand(char command)
 {
 	TPacket commandPacket;
@@ -195,54 +165,14 @@ void sendCommand(char command)
 	commandPacket.packetType = PACKET_TYPE_COMMAND;
 
 	switch(command)
-	{
-		case 'f':
-		case 'F':
-			getParams(&commandPacket);
-			commandPacket.command = COMMAND_FORWARD;
-			sendPacket(&commandPacket);
-			break;
-
-		case 'b':
-		case 'B':
-			getParams(&commandPacket);
-			commandPacket.command = COMMAND_REVERSE;
-			sendPacket(&commandPacket);
-			break;
-
-		case 'l':
-		case 'L':
-			getParams(&commandPacket);
-			commandPacket.command = COMMAND_TURN_LEFT;
-			sendPacket(&commandPacket);
-			break;
-
-		case 'r':
-		case 'R':
-			getParams(&commandPacket);
-			commandPacket.command = COMMAND_TURN_RIGHT;
-			sendPacket(&commandPacket);
-			break;
-
+	{     
 		case 'e':
 		case 'E':
 			commandPacket.command = COMMAND_STOP;
 			sendPacket(&commandPacket);
 			break;
 
-		case 'c':
-		case 'C':
-			commandPacket.command = COMMAND_CLEAR_STATS;
-			commandPacket.params[0] = 0;
-			sendPacket(&commandPacket);
-			break;
-
-		case 'g':
-		case 'G':
-			commandPacket.command = COMMAND_GET_STATS;
-			sendPacket(&commandPacket);
-			break;
-			
+		
 		case 'x':
 		case 'X':
 			commandPacket.command = COMMAND_DETECT_COLOUR;
@@ -297,7 +227,7 @@ void sendCommand(char command)
 }
 
 void printMessage(int speed) {
-	printw("w, a, s, d to move.\ne to stop.\nj to increase speed.\nk to decrease speed.\npress o then enter to leave.\nSpeed is %d\n",speed);
+	printw("w, a, s, d to move.\ne to stop.\nh to increase speed.\nj to decrease speed.\npress o then enter to leave.\nSpeed is %d\n",speed);
 }
 
 int main()
