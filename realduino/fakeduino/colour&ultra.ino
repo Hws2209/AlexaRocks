@@ -60,8 +60,15 @@ void detectColour()
   float val = 0;
 
   // Setting RED (R) filtered photodiodes to be read
+  
+  PORTB &= ~(0b00000001);
+  PORTD &= ~(0b10000000);
+  
+  /*
   digitalWrite(S2, LOW);
   digitalWrite(S3, LOW);
+  */
+  
   for (int i = 0; i < 10; i++) {
     val = pulseIn(sensorOut, LOW);
     redFrequency += val / 10;
@@ -69,8 +76,15 @@ void detectColour()
   delay(100);
 
   // Setting GREEN (G) filtered photodiodes to be read
+  
+  PORTB |= 0b00000001;
+  PORTD |= 0b10000000;
+  
+  /*
   digitalWrite(S2, HIGH);
   digitalWrite(S3, HIGH);
+  */
+  
   for (int i = 0; i < 10; i++) {
     val = pulseIn(sensorOut, LOW);
     greenFrequency += val / 10;
@@ -78,8 +92,15 @@ void detectColour()
   delay(100);
 
   // Setting BLUE (B) filtered photodiodes to be read
+  
+  PORTB &= ~(0b00000001);
+  PORTD |= 0b10000000;
+  
+  /*
   digitalWrite(S2, LOW);
   digitalWrite(S3, HIGH);
+  */
+  
   for (int i = 0; i < 10; i++) {
     val = pulseIn(sensorOut, LOW);
     blueFrequency += val / 10;
