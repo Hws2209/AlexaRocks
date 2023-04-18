@@ -34,7 +34,6 @@ void inch_right()
   OCR1B = val;   //RR
 }
 
-// Stop Alex. To replace with bare-metal code later.
 void stop()
 {
   dir = STOP;
@@ -42,5 +41,4 @@ void stop()
   OCR0B = 0;   //LF
   OCR2A = 0;   //RF
   OCR1B = 0;   //RR
-  
 }
