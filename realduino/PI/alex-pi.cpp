@@ -285,7 +285,7 @@ int main()
 		}
 
 		char ch;
-		printf("Command (f=forward, b=reverse, l=turn left, r=turn right, e=stop, c=clear stats, g=get stats, x=colour, q=exit, o=return to ncurses)\n");
+		printf("Command (e=stop, x=colour, q=exit, o=return to ncurses)\n");
 		scanf("%c", &ch);
 
 		// Purge extraneous characters from input stream
