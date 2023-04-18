@@ -14,7 +14,7 @@ float currentTime, elapsedTime, previousTime;
 float gyroErrorZ;
 float degree;
 
-// Motor control pins. You need to adjust these till Alex moves in the correct direction
+// Motor control pins.
 #define LF                  5   // Left forward pin
 #define LR                  6   // Left reverse pin
 #define RF                  11  // Right forward pin
