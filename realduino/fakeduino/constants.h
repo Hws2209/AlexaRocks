@@ -31,8 +31,6 @@ typedef enum
 
 
 // Commands
-// For direction commands, param[0] = distance in cm to move
-// param[1] = speed
 typedef enum
 {
   COMMAND_STOP = 4,
