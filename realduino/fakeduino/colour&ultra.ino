@@ -1,16 +1,8 @@
 void setupColour()
 {
-  DDRB |= 0b00100011;
   DDRB &= ~(0b00010000);
+  DDRB |= 0b00100011;
   DDRD |= 0b10000000;
-  
-  /*
-  pinMode(S0, OUTPUT);
-  pinMode(S1, OUTPUT);
-  pinMode(S2, OUTPUT);
-  pinMode(S3, OUTPUT);
-  pinMode(sensorOut, INPUT);
-  */
 
   // Setting frequency scaling to 20%
   PORTB |= 0b00100000;
