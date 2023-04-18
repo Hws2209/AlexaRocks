@@ -5,13 +5,9 @@ void setupColour()
   DDRD |= 0b10000000;
 
   // Setting frequency scaling to 20%
+  // by setting S0 HIGH and S1 LOW
   PORTB |= 0b00100000;
   PORTB &= ~(0b10);
-  
-  /*
-  digitalWrite(S0, HIGH);
-  digitalWrite(S1, LOW);
-  */
 }
 
 double calcHue()
