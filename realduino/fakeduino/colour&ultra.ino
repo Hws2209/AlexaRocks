@@ -1,15 +1,25 @@
 void setupColour()
 {
+  DDRB |= 0b00100011;
+  DDRB &= ~(0b00010000);
+  DDRD |= 0b10000000;
+  
+  /*
   pinMode(S0, OUTPUT);
   pinMode(S1, OUTPUT);
   pinMode(S2, OUTPUT);
   pinMode(S3, OUTPUT);
-
   pinMode(sensorOut, INPUT);
+  */
 
   // Setting frequency scaling to 20%
+  PORTB |= 0b00100000;
+  PORTB &= ~(0b10);
+  
+  /*
   digitalWrite(S0, HIGH);
   digitalWrite(S1, LOW);
+  */
 }
 
 double calcHue()
@@ -93,13 +103,17 @@ void detectColour()
 }
 
 void ultrasonic() {
-  digitalWrite(trigPin, LOW);
+  
+  PORTD &= ~(0b1000);
+  //digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
 
-  digitalWrite(trigPin, HIGH);
+  //digitalWrite(trigPin, HIGH);
+  PORTD |= 0b1000;
   delayMicroseconds(10);
 
-  digitalWrite(trigPin, LOW);
+  //digitalWrite(trigPin, LOW);
+  PORTD &= ~(0b1000);
   duration = pulseIn(echoPin, HIGH);
 
   distance = duration / 58.0;
