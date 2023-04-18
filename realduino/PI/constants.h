@@ -25,14 +25,12 @@ typedef enum
   RESP_BAD_PACKET = 2,
   RESP_BAD_CHECKSUM = 3,
   RESP_BAD_COMMAND = 4,
-  RESP_BAD_RESPONSE = 5,
+  RESP_BAD_RESPONSE = 5, 
   RESP_COLOUR = 6
 } TResponseType;
 
 
 // Commands
-// For direction commands, param[0] = distance in cm to move
-// param[1] = speed
 typedef enum
 {
   COMMAND_STOP = 4,
@@ -52,7 +50,7 @@ typedef enum
   BACKWARD = 2,
   LEFT = 3,
   RIGHT = 4
-}TDirection;
+} TDirection;
 
 volatile TDirection dir = STOP;
 #endif
