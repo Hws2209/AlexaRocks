@@ -50,14 +50,9 @@ void detectColour()
   float val = 0;
 
   // Setting RED (R) filtered photodiodes to be read
-  
+  // by setting S2 LOW, S3 LOW
   PORTB &= ~(0b00000001);
   PORTD &= ~(0b10000000);
-  
-  /*
-  digitalWrite(S2, LOW);
-  digitalWrite(S3, LOW);
-  */
   
   for (int i = 0; i < 10; i++) {
     val = pulseIn(sensorOut, LOW);
@@ -66,14 +61,9 @@ void detectColour()
   delay(100);
 
   // Setting GREEN (G) filtered photodiodes to be read
-  
+  // by setting S2 HIGH, S3 HIGH
   PORTB |= 0b00000001;
   PORTD |= 0b10000000;
-  
-  /*
-  digitalWrite(S2, HIGH);
-  digitalWrite(S3, HIGH);
-  */
   
   for (int i = 0; i < 10; i++) {
     val = pulseIn(sensorOut, LOW);
@@ -82,14 +72,9 @@ void detectColour()
   delay(100);
 
   // Setting BLUE (B) filtered photodiodes to be read
-  
+  // by setting S2 LOW, S3 HIGH
   PORTB &= ~(0b00000001);
   PORTD |= 0b10000000;
-  
-  /*
-  digitalWrite(S2, LOW);
-  digitalWrite(S3, HIGH);
-  */
   
   for (int i = 0; i < 10; i++) {
     val = pulseIn(sensorOut, LOW);
@@ -113,19 +98,19 @@ void detectColour()
   hue = calcHue() * 60;
 }
 
-void ultrasonic() {
-  
+void ultrasonic() 
+{  
+  // Setting trigPin LOW
   PORTD &= ~(0b1000);
-  //digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
 
-  //digitalWrite(trigPin, HIGH);
+  // Setting trigPin HIGH
   PORTD |= 0b1000;
   delayMicroseconds(10);
 
-  //digitalWrite(trigPin, LOW);
+  // Setting trigPin LOW
   PORTD &= ~(0b1000);
+  
   duration = pulseIn(echoPin, HIGH);
-
   distance = duration / 58.0;
 }
