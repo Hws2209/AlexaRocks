@@ -6,15 +6,6 @@
 #include <SparkFunLSM9DS1_test.h>
 #include <math.h>
 
-// Alex's configuration constants
-// Number of ticks per revolution from the wheel encoder.
-#define COUNTS_PER_REV      180
-#define WHEEL_CIRC          20.4
-#define ALEX_LENGTH 22.5
-#define ALEX_BREADTH 12.5
-float alexDiagonal = 0.0;
-float alexCirc = 0.0;
-
 // IMU STUFF
 LSM9DS1 imu;
 #define DECLINATION +0.08 // Declination (degrees) in Singapore 
@@ -57,22 +48,6 @@ float blueFrequency = 0;
 double rgb[3] = {0, 0, 0};
 double hue;
 
-volatile unsigned long leftForwardTicks, rightForwardTicks, leftReverseTicks, rightReverseTicks;
-volatile unsigned long leftForwardTicksTurns, rightForwardTicksTurns, leftReverseTicksTurns, rightReverseTicksTurns;
-volatile unsigned long leftRevs, rightRevs;
-volatile unsigned long forwardDist, reverseDist;
-unsigned long deltaDist, newDist;
-unsigned long deltaTicks, targetTicks;
-
-void enablePullups()
-{
-  // Use bare-metal to enable the pull-up resistors on pins
-  // 2 and 3. These are pins PD2 and PD3 respectively.
-  // We set bits 2 and 3 in DDRD to 0 to make them inputs.
-  DDRD &= ~((1 << 2) | (1 << 3));
-  PORTD |=  (1 << 2) | (1 << 3);
-}
-
 // Set up Alex's motors. Right now this is empty, but later you will replace it with code to set up the PWMs to drive the motors.
 // Convert percentages to PWM values
 int pwmVal(float speed)
@@ -80,11 +55,6 @@ int pwmVal(float speed)
   if (speed < 0.0) speed = 0;
   if (speed > 100.0) speed = 100.0;
   return (int) ((speed / 100.0) * 255.0);
-}
-
-void initializeState()
-{
-  clearCounters();
 }
 
 void calcError() {
@@ -116,12 +86,10 @@ void proportional_control(TDirection dir)
     if (dir == FORWARD) {
       val_1 += 1;
       if (val_1 > 255) val_1 = 255;
-      // analogWrite(RF, val_1);
       OCR2A = val_1;
     } else {
       val_1 -= 1;
       if (val_1 < 0) val_1 = 0;
-      // analogWrite(RR, val_1); //would increase GyroZ
       OCR1B = val_1;
     }
   } else {
@@ -145,19 +113,13 @@ void setup() {
   startSerial();
   Wire.begin();
 
-  // IMU Setup
-  alexDiagonal = sqrt((ALEX_LENGTH * ALEX_LENGTH) + (ALEX_BREADTH * ALEX_BREADTH));
-  alexCirc = PI * ALEX_BREADTH;
-
   cli();
   setupEINT();
   setupMotors();
   setupColour();
   startMotors();
-  // enablePullups();
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  // initializeState();
   sei();
 
   calcError();
@@ -165,7 +127,6 @@ void setup() {
 
   if (imu.begin() == false)
   {
-
     while (1);
   }
 }
