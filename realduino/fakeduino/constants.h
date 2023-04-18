@@ -35,13 +35,7 @@ typedef enum
 // param[1] = speed
 typedef enum
 {
-  COMMAND_FORWARD = 0,
-  COMMAND_REVERSE = 1,
-  COMMAND_TURN_LEFT = 2,
-  COMMAND_TURN_RIGHT = 3,
   COMMAND_STOP = 4,
-  COMMAND_GET_STATS = 5,
-  COMMAND_CLEAR_STATS = 6,
   COMMAND_DETECT_COLOUR = 7,
   COMMAND_F = 8,
   COMMAND_B = 9,
