@@ -4,7 +4,11 @@
 void setupSerial()
 {
   // To replace later with bare-metal.
-  Serial.begin(9600);
+  UBRR0H = 0;
+  UBRR0L = 103;
+
+  UCSR0C = (1 << UCSZ01) | (1 << UCSZ00); // 8N1
+  UCSR0A = 0;
 }
 
 // Start the serial connection. For now we are using
@@ -15,7 +19,7 @@ void startSerial()
 {
   // Empty for now. To be replaced with bare-metal code
   // later on.
-
+  UCSR0B = (1 << TXEN0) | (1 << RXEN0);  // Start Transmiter and receiver
 }
 
 // Read the serial port. Returns the read character in
@@ -24,12 +28,10 @@ void startSerial()
 
 int readSerial(char *buffer)
 {
-
   int count = 0;
-
-  while (Serial.available())
-    buffer[count++] = Serial.read();
-
+  while (UCSR0A & (1 << RXC0)) {
+    buffer[count++] = UDR0;
+  }
   return count;
 }
 
@@ -38,5 +40,8 @@ int readSerial(char *buffer)
 
 void writeSerial(const char *buffer, int len)
 {
-  Serial.write(buffer, len);
+  for (int i = 0; i < len; i++) {
+    while (!(UCSR0A & (1 << UDRE0))); // Wait for empty transmit buffer
+    UDR0 = buffer[i];
+  }
 }
