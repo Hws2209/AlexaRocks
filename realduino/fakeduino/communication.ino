@@ -16,7 +16,6 @@ void waitForHello()
     {
       if (hello.packetType == PACKET_TYPE_HELLO)
       {
-
         sendOK();
         exit = 1;
       }
@@ -34,9 +33,7 @@ void waitForHello()
 
 void sendMessage(const char *message)
 {
-  // Sends text messages back to the Pi. Useful
-  // for debugging.
-
+  // Sends text messages back to the Pi.
   TPacket messagePacket;
   messagePacket.packetType = PACKET_TYPE_MESSAGE;
   strncpy(messagePacket.data, message, MAX_STR_LEN);
