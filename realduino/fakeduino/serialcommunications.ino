@@ -1,9 +1,6 @@
-// Set up the serial connection. For now we are using
-// Arduino Wiring, you will replace this later
-// with bare-metal code.
+// Set up the serial connection. 
 void setupSerial()
 {
-  // To replace later with bare-metal.
   UBRR0H = 0;
   UBRR0L = 103;
 
@@ -11,21 +8,14 @@ void setupSerial()
   UCSR0A = 0;
 }
 
-// Start the serial connection. For now we are using
-// Arduino wiring and this function is empty. We will
-// replace this later with bare-metal code.
-
+// Start the serial connection.
 void startSerial()
 {
-  // Empty for now. To be replaced with bare-metal code
-  // later on.
   UCSR0B = (1 << TXEN0) | (1 << RXEN0);  // Start Transmiter and receiver
 }
 
 // Read the serial port. Returns the read character in
 // ch if available. Also returns TRUE if ch is valid.
-// This will be replaced later with bare-metal code.
-
 int readSerial(char *buffer)
 {
   int count = 0;
@@ -35,9 +25,7 @@ int readSerial(char *buffer)
   return count;
 }
 
-// Write to the serial port. Replaced later with
-// bare-metal code
-
+// Write to the serial port. 
 void writeSerial(const char *buffer, int len)
 {
   for (int i = 0; i < len; i++) {
