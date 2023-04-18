@@ -115,8 +115,10 @@ void setup() {
   setupMotors();
   setupColour();
   startMotors();
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
+  
+  // Ultrasonic Setup
+  DDRD |= 0b00001000;
+  DDRD &= ~(0b00000100);
   sei();
 
   calcError();
