@@ -25,13 +25,6 @@ void handleCommand(TPacket *command)
       sendOK();
       stop();
       break;
-    case COMMAND_GET_STATS:
-      sendStatus();
-      break;
-    case COMMAND_CLEAR_STATS:
-      sendOK();
-      clearOneCounter(command->params[0]);
-      break;
     case COMMAND_DETECT_COLOUR:
       detectColour();
       ultrasonic();
