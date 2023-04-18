@@ -111,7 +111,6 @@ void setup() {
   startSerial();
   Wire.begin();
 
-  cli();
   setupMotors();
   setupColour();
   startMotors();
@@ -119,7 +118,6 @@ void setup() {
   // Ultrasonic Setup
   DDRD |= 0b00001000;
   DDRD &= ~(0b00000100);
-  sei();
 
   calcError();
   currentTime = micros();
@@ -146,7 +144,6 @@ void loop() {
   {
     sendBadChecksum();
   }
-
 
   if ( imu.gyroAvailable() )
   {
