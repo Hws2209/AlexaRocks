@@ -6,7 +6,24 @@
 #include <SparkFunLSM9DS1_test.h>
 #include <math.h>
 
-// IMU STUFF
+// Motor control pins
+#define LF                  5   // Left forward pin
+#define LR                  6   // Left reverse pin
+#define RF                  11  // Right forward pin
+#define RR                  10  // Right reverse pin
+
+// Colour sensor pins
+#define S0 13
+#define S1 9
+#define S2 8
+#define S3 7
+#define sensorOut 12
+
+// Ultrasonic sensor pins
+const int trigPin = 3;
+const int echoPin = 2;
+
+// IMU variables
 LSM9DS1 imu;
 #define DECLINATION +0.08 // Declination (degrees) in Singapore 
 float gyroZ;
@@ -14,41 +31,25 @@ float currentTime, elapsedTime, previousTime;
 float gyroErrorZ;
 float degree;
 
-// Motor control pins.
-#define LF                  5   // Left forward pin
-#define LR                  6   // Left reverse pin
-#define RF                  11  // Right forward pin
-#define RR                  10  // Right reverse pin
-
-#define S0 13
-#define S1 9
-#define S2 8
-#define S3 7
-#define sensorOut 12
-
-// Motor proportional control
+// Motor proportional control variables
 float motor_speed = 60; // 60% speed
 float proportional = 0.1;
 float derivative = 0.01;
 float previousdegree = 0;
-
 int val_1;
 int pd_counter = 0;
 
-// Ultrasonic
-const int trigPin = 3;
-const int echoPin = 2;
+// Ultrasonic sensor variables
 long duration;
 float distance;
 
-// Colour Sensor Stuff
+// Colour sensor variables
 float redFrequency = 0;
 float greenFrequency = 0;
 float blueFrequency = 0;
 double rgb[3] = {0, 0, 0};
 double hue;
 
-// Set up Alex's motors. Right now this is empty, but later you will replace it with code to set up the PWMs to drive the motors.
 // Convert percentages to PWM values
 int pwmVal(float speed)
 {
@@ -82,7 +83,8 @@ void proportional_control(TDirection dir)
 
   if (round(targetGyroZ - gyroZ) == 0) {
     ;
-  } else if (targetGyroZ > gyroZ) {
+  } 
+  else if (targetGyroZ > gyroZ) {
     if (dir == FORWARD) {
       val_1 += 1;
       if (val_1 > 255) val_1 = 255;
@@ -92,7 +94,8 @@ void proportional_control(TDirection dir)
       if (val_1 < 0) val_1 = 0;
       OCR1B = val_1;
     }
-  } else {
+  } 
+  else {
     if (dir == FORWARD) {
       val_1 -= 1;
       if (val_1 < 0) val_1 = 0;
@@ -106,11 +109,9 @@ void proportional_control(TDirection dir)
 }
 
 void setup() {
-  // put your setup code here, to run once:
   setupSerial();
   startSerial();
   Wire.begin();
-
   setupMotors();
   setupColour();
   startMotors();
@@ -121,7 +122,6 @@ void setup() {
 
   calcError();
   currentTime = micros();
-
   if (imu.begin() == false)
   {
     while (1);
@@ -165,7 +165,8 @@ void loop() {
     {
       proportional_control(dir);
       pd_counter = 0;
-    } else
+    } 
+    else
     {
       pd_counter++;
     }
