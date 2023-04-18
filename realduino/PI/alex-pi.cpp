@@ -95,7 +95,7 @@ void handlePacket(TPacket *packet)
 	switch(packet->packetType)
 	{
 		case PACKET_TYPE_COMMAND:
-				// Only we send command packets, so ignore
+			// Only we send command packets, so ignore
 			break;
 
 		case PACKET_TYPE_RESPONSE:
@@ -154,14 +154,12 @@ void *receiveThread(void *p)
 void flushInput()
 {
 	char c;
-
 	while((c = getchar()) != '\n' && c != EOF);
 }
 
 void sendCommand(char command)
 {
 	TPacket commandPacket;
-
 	commandPacket.packetType = PACKET_TYPE_COMMAND;
 
 	switch(command)
@@ -172,7 +170,6 @@ void sendCommand(char command)
 			sendPacket(&commandPacket);
 			break;
 
-		
 		case 'x':
 		case 'X':
 			commandPacket.command = COMMAND_DETECT_COLOUR;
@@ -280,7 +277,6 @@ int main()
 				printMessage(speed);
 				refresh();
 				sendCommand(input);
-
 			}
 		}
 
