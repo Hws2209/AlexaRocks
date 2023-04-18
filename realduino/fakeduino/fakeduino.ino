@@ -129,7 +129,6 @@ void setup() {
 }
 
 void loop() {
-
   // TPACKET RECEIVE
   TPacket recvPacket; // This holds commands from the Pi
   TResult result = readPacket(&recvPacket);
