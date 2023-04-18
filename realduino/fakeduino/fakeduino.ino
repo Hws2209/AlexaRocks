@@ -96,12 +96,10 @@ void proportional_control(TDirection dir)
     if (dir == FORWARD) {
       val_1 -= 1;
       if (val_1 < 0) val_1 = 0;
-      // analogWrite(RF, val_1);
       OCR2A = val_1;
     } else {
       val_1 += 1;
       if (val_1 > 255) val_1 = 255;
-      // analogWrite(RR, val_1); //would increase GyroZ
       OCR1B = val_1;
     }
   }
