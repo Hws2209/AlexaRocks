@@ -21,22 +21,6 @@ void handleCommand(TPacket *command)
   switch (command->command)
   {
     // For movement commands, param[0] = distance, param[1] = speed.
-    case COMMAND_FORWARD:
-      sendOK();
-      forward((float) command->params[0], (float) command->params[1]);
-      break;
-    case COMMAND_REVERSE:
-      sendOK();
-      reverse((float) command->params[0], (float) command->params[1]);
-      break;
-    case COMMAND_TURN_LEFT:
-      sendOK();
-      left((float) command->params[0], (float) command->params[1]);
-      break;
-    case COMMAND_TURN_RIGHT:
-      sendOK();
-      right((float) command->params[0], (float) command->params[1]);
-      break;
     case COMMAND_STOP:
       sendOK();
       stop();
